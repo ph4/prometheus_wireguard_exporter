@@ -118,6 +118,7 @@ prometheus_wireguard_exporter -a true -v true <...>
 
 | Parameter | Env | Mandatory | Valid values | Default | Accepts multiple occurrences? | Description |
 | -- | -- | -- | -- | -- | -- | -- |
+| `-w` | `PROMETHEUS_WIREGUARD_EXPORTER_AWG_ENABLED` | No | `true` or `false` | `false` | No | Enable AmneziaWG mode.
 | `-v` | `PROMETHEUS_WIREGUARD_EXPORTER_VERBOSE_ENABLED` | No | `true` or `false` | `false` | No | Enable verbose mode.
 | `-a` | `PROMETHEUS_WIREGUARD_EXPORTER_PREPEND_SUDO_ENABLED` | No | `true` or `false` | `false` | No | Prepends sudo to `wg` commands.
 | `-l` | `PROMETHEUS_WIREGUARD_EXPORTER_ADDRESS` | No | Any valid IP address | `0.0.0.0` | No | Specify the service address. This is the address your Prometheus instance should point to.

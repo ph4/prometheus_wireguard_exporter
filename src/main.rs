@@ -51,16 +51,21 @@ async fn perform_request(
 
     let mut wg_accumulator: Option<WireGuard> = None;
 
+    let wg = match options.awg {
+        true => "awg",
+        false => "wg",
+    };
+
     for interface_to_handle in interfaces_to_handle {
         let output = if options.prepend_sudo {
             Command::new("sudo")
-                .arg("wg")
+                .arg(wg)
                 .arg("show")
                 .arg(&interface_to_handle)
                 .arg("dump")
                 .output()?
         } else {
-            Command::new("wg")
+            Command::new(wg)
                 .arg("show")
                 .arg(&interface_to_handle)
                 .arg("dump")
@@ -116,6 +121,15 @@ async fn main() -> Result<(), Box<dyn std::error::Error + Send + Sync>> {
     let matches = clap::Command::new(crate_name!())
         .version(crate_version!())
         .author(crate_authors!("\n"))
+        .arg(
+            Arg::new("awg")
+                .short('w')
+                .long("awg")
+                .env("PROMETHEUS_WIREGUARD_EXPORTER_AWG_ENABLED")
+                .value_parser(value_parser!(bool))
+                .help("Use AWG edition")
+                .default_value("false")
+        )
         .arg(
             Arg::new("addr")
                 .short('l')

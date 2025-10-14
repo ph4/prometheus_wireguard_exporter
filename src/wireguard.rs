@@ -94,7 +94,9 @@ impl TryFrom<&str> for WireGuard {
             let v: Vec<&str> = line.split('\t').filter(|s| !s.is_empty()).collect();
             debug!("WireGuard::try_from v == {:?}", v);
 
-            let endpoint = if v.len() == 5 {
+            let interface = v[0];
+
+            let endpoint = if !wg.interfaces.contains_key(interface) {
                 // this is the local interface
                 Endpoint::Local(LocalEndpoint {
                     public_key: v[1].to_owned(),
@@ -140,11 +142,11 @@ impl TryFrom<&str> for WireGuard {
 
             trace!("WireGuard::try_from endpoint == {:?}", endpoint);
 
-            if let Some(endpoints) = wg.interfaces.get_mut(v[0]) {
+            if let Some(endpoints) = wg.interfaces.get_mut(interface) {
                 endpoints.push(endpoint);
             } else {
                 let new_vec = vec![endpoint];
-                wg.interfaces.insert(v[0].to_owned(), new_vec);
+                wg.interfaces.insert(interface.to_owned(), new_vec);
             }
         }
 

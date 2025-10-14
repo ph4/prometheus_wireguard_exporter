@@ -2,6 +2,7 @@ use clap::parser::ValuesRef;
 
 #[derive(Debug, Clone)]
 pub(crate) struct Options {
+    pub awg: bool,
     pub verbose: bool,
     pub prepend_sudo: bool,
     pub separate_allowed_ips: bool,
@@ -14,6 +15,7 @@ pub(crate) struct Options {
 impl Options {
     pub fn from_claps(matches: &clap::ArgMatches) -> Options {
         let options = Options {
+            awg: *matches.get_one("awg").unwrap_or(&false),
             verbose: *matches.get_one("verbose").unwrap_or(&false),
             prepend_sudo: *matches.get_one("prepend_sudo").unwrap_or(&false),
             separate_allowed_ips: *matches.get_one("separate_allowed_ips").unwrap_or(&false),
